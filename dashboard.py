@@ -1,4 +1,5 @@
 import dash
+import dash_bootstrap_components as dbc
 from dash import dcc, html, Input, Output, State, dash_table
 import plotly.express as px
 import plotly.graph_objects as go
@@ -65,7 +66,7 @@ CONTENT_WRAPPER_STYLE = {
 }
 
 # --- DEFINICIÓN DE LA APP ---
-app = dash.Dash(__name__, external_stylesheets=['https://codepen.io/chriddyp/pen/bWLwgP.css'])
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 app.title = "GoData Financial Dashboard"
 server = app.server  # Exponer el server para deployment
 
