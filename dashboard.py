@@ -34,14 +34,17 @@ FILTER_ITEM_STYLE = {
 }
 
 SIDEBAR_STYLE = {
-    "width": "240px",
+    "width": "195px",
+    "minWidth": "195px",
+    "maxWidth": "195px",
     "minHeight": "100vh",
     "backgroundColor": "#2c3e50",
     "color": "white",
     "padding": "24px 18px",
     "boxShadow": "2px 0 8px rgba(0,0,0,0.1)",
     "position": "sticky",
-    "top": 0
+    "top": 0,
+    "flexShrink": 0
 }
 
 SIDEBAR_ITEM_STYLE = {
