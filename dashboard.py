@@ -91,8 +91,8 @@ app.layout = html.Div([
                     html.Label("Seleccionar Año:", style={'fontWeight': 'bold', 'marginBottom': '5px', 'display': 'block'}),
                     dcc.Dropdown(
                         id='year-filter',
-                        options=[{'label': str(y), 'value': y} for y in [2024, 2025]],
-                        value=2025,
+                        options=[{'label': str(y), 'value': y} for y in [2024, 2025, 2026]],
+                        value=2026,
                         clearable=False,
                         style={'color': 'black'}
                     ),

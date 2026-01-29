@@ -9,7 +9,7 @@ def generar_base_datos():
 
     # --- 1. CONFIGURACIÓN INICIAL ---
     start_date = datetime.date(2024, 1, 1)
-    end_date = datetime.date(2025, 12, 31)
+    end_date = datetime.date(2026, 12, 31)
     date_range = pd.date_range(start=start_date, end=end_date, freq='D')
     
     n_customers = 300
