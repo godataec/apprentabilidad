@@ -196,6 +196,18 @@ app.layout = html.Div([
                 'marginBottom': '20px'
             }),
 
+            # Cuarta fila: Gráfico de líneas de tiempo
+            html.Div([
+                html.H3("Evolución del Profit a lo Largo del Tiempo", style={'color': '#2c3e50', 'marginBottom': '15px'}),
+                dcc.Graph(id='time-series-chart', style={'height': '500px'})
+            ], style={
+                'backgroundColor': 'white',
+                'padding': '20px',
+                'borderRadius': '10px',
+                'boxShadow': '0 4px 8px 0 rgba(0,0,0,0.2)',
+                'marginBottom': '20px'
+            }),
+
             html.Div(id='debug-text', style={'color': 'gray', 'textAlign': 'center'}),
         ], style=CONTENT_WRAPPER_STYLE),
     ], style={'display': 'flex', 'gap': '24px', 'alignItems': 'flex-start'}),
@@ -400,6 +412,72 @@ def update_drill_chart(selected_segment, selected_year, selected_month):
     }
     
     return fig, title_text, style
+
+# Callback para el gráfico de líneas de tiempo
+@app.callback(
+    Output('time-series-chart', 'figure'),
+    [Input('year-filter', 'value')]
+)
+def update_time_series(selected_year):
+    # Agrupar datos diarios por fecha para 2024 y 2025
+    df_2024 = df_diario[df_diario['Year'] == 2024].groupby('Date').agg({
+        'Profit': 'sum'
+    }).reset_index()
+    
+    df_2025 = df_diario[df_diario['Year'] == 2025].groupby('Date').agg({
+        'Profit': 'sum'
+    }).reset_index()
+    
+    # Crear figura
+    fig = go.Figure()
+    
+    # Línea para 2024
+    fig.add_trace(go.Scatter(
+        x=df_2024['Date'],
+        y=df_2024['Profit'],
+        mode='lines',
+        name='2024',
+        line=dict(color='#3498db', width=2),
+        hovertemplate='<b>2024</b><br>Fecha: %{x|%Y-%m-%d}<br>Profit: $%{y:,.2f}<extra></extra>'
+    ))
+    
+    # Línea para 2025
+    fig.add_trace(go.Scatter(
+        x=df_2025['Date'],
+        y=df_2025['Profit'],
+        mode='lines',
+        name='2025',
+        line=dict(color='#e74c3c', width=2),
+        hovertemplate='<b>2025</b><br>Fecha: %{x|%Y-%m-%d}<br>Profit: $%{y:,.2f}<extra></extra>'
+    ))
+    
+    # Configurar layout
+    fig.update_layout(
+        title='Profit Diario - Comparación 2024 vs 2025',
+        xaxis_title='Fecha',
+        yaxis_title='Profit (USD)',
+        hovermode='x unified',
+        legend=dict(
+            orientation='h',
+            yanchor='bottom',
+            y=1.02,
+            xanchor='right',
+            x=1
+        ),
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor='white',
+        font=dict(family='Arial, sans-serif', size=12, color='#2c3e50'),
+        margin=dict(l=50, r=50, t=80, b=50)
+    )
+    
+    # Agregar línea de referencia en y=0
+    fig.add_hline(y=0, line_dash="dash", line_color="gray", opacity=0.5)
+    
+    # Configurar ejes
+    fig.update_xaxis(showgrid=True, gridcolor='#ecf0f1')
+    fig.update_yaxis(showgrid=True, gridcolor='#ecf0f1', tickformat='$,.0f')
+    
+    return fig
 
 # Callback para actualizar la tabla de clientes
 @app.callback(
